@@ -20,6 +20,18 @@ class EntryController extends Controller
         return inertia('NewEntry');
     }
 
+    public function destroy(Entry $entry)
+    {
+        $entry->delete();
+        return redirect()->route('entries.index')->with('success', 'Entry deleted!');
+    }
+
+    public function edit($id)
+    {
+        $entry = Entry::findOrFail($id);
+        return inertia('EditEntry', ['entry' => $entry]);
+    }
+
     // Save new entry
     public function store(Request $request)
     {

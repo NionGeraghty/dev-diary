@@ -13,6 +13,7 @@ Route::get('/', function () {
 
 Route::get('/new-entry', [EntryController::class, 'create'])->name('new-entry.create');
 Route::post('/entries', [EntryController::class, 'store']);  // POST for saving
-
 Route::get('/entries', [EntryController::class, 'index'])->name('entries.index');
+Route::get('/entries/{id}/edit', [EntryController::class, 'edit'])->name('entries.edit');
+Route::delete('/entries/{entry}', [EntryController::class, 'destroy'])->name('entries.destroy');
 Route::get('/stats', [StatsController::class, 'index'])->name('stats.index');
