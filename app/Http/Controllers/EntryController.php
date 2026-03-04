@@ -20,16 +20,32 @@ class EntryController extends Controller
         return inertia('NewEntry');
     }
 
-    public function destroy(Entry $entry)
+    public function destroy($id)
     {
-        $entry->delete();
-        return redirect()->route('entries.index')->with('success', 'Entry deleted!');
+        Entry::findOrFail($id)->delete();
+        return redirect()->route('entries.index');
     }
 
     public function edit($id)
     {
         $entry = Entry::findOrFail($id);
         return inertia('EditEntry', ['entry' => $entry]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $entry = Entry::findOrFail($id);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string',
+            'hours_coded' => 'required|numeric|min:0',
+            'tags' => 'nullable|string',
+        ]);
+
+        $entry->update($validated);
+
+        return redirect('/entries')->with('success', 'Entry updated!');
     }
 
     // Save new entry

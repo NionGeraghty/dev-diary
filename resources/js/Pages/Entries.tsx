@@ -21,13 +21,10 @@ interface EntriesProps {
 export default function Entries({ entries }: EntriesProps) {
 
     const handleDelete = (id: number) => {
-        console.log("deleting id", id);
-        const correctRoute = `/entries/${id}`;
-        console.log("correctRoute", correctRoute);
         if (confirm("Are you sure you want to delete this entry?")) {
-            router.delete(correctRoute);
+            router.post(`/entries/${id}/delete`);
         }
-    };
+    }
 
     return (
         <div className="bg-blue-100 min-h-screen flex flex-col">
