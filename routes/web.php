@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
-
 
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\EntryController;
@@ -49,10 +50,33 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/new-entry', [EntryController::class, 'create'])->name('new-entry.create');
-Route::post('/entries', [EntryController::class, 'store']);  // POST for saving
 Route::get('/entries', [EntryController::class, 'index'])->name('entries.index');
-Route::get('/entries/{id}/edit', [EntryController::class, 'edit'])->name('entries.edit');
-Route::post('/entries/{id}/delete', [EntryController::class, 'destroy'])->name('entries.delete');
-Route::post('/entries/{id}', [EntryController::class, 'update'])->name('entries.update');
 Route::get('/stats', [StatsController::class, 'index'])->name('stats.index');
+Route::get('/new-entry', [EntryController::class, 'create'])->name('new-entry.create');
+Route::get('/entries/{id}/edit', [EntryController::class, 'edit'])->name('entries.edit');
+
+// Login routes
+Route::get('/login', function () {
+    return Inertia::render('Login');
+})->name('login');
+
+Route::post('/login', function (Request $request) {
+    if ($request->password === env('APP_PASSWORD')) {
+        Session::put('authenticated', true);
+        return redirect('/');  // Use redirect instead of Inertia::location
+    }
+    
+    return back()->withErrors(['password' => 'Incorrect password']);
+});
+
+Route::post('/logout', function () {
+    Session::forget('authenticated');
+    return redirect('/');  // Use redirect instead of Inertia::location
+})->name('logout');
+
+// Protected routes - need password to CREATE/EDIT/DELETE
+Route::middleware('simple.auth')->group(function () {
+    Route::post('/entries', [EntryController::class, 'store']);
+    Route::post('/entries/{id}', [EntryController::class, 'update']);
+    Route::post('/entries/{id}/delete', [EntryController::class, 'destroy']);
+});

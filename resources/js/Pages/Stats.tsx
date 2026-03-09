@@ -76,7 +76,7 @@ export default function Stats({ entries, totalHours, streak }: StatsProps) {
                     <h2 className="text-2xl font-bold mb-4">Hours Coded (Last 7 Days)</h2>
                     <div className="space-y-2">
                         {hoursByDay.map(({ date, hours }) => {
-                            const dayName = new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                            const dayName = new Date(date).toLocaleDateString('en-UK', { weekday: 'short', month: 'short', day: 'numeric' });
                             const barWidth = Math.min((hours / 8) * 100, 100); // Scale to 8 hours max
                             
                             return (
