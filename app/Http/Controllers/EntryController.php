@@ -46,7 +46,7 @@ class EntryController extends Controller
 
         $entry->update($validated);
 
-        return Inertia::location('/entries')->with('success', 'Entry updated!');
+        return Inertia::location('/entries');
     }
 
     // Save new entry
@@ -61,6 +61,6 @@ class EntryController extends Controller
 
         Entry::create($validated);
 
-        return Inertia::location('/entries')->with('success', 'Entry saved!');
+        return Inertia::location('/entries');
     }
 }
