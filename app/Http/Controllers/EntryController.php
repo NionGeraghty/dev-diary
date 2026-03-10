@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Entry;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class EntryController extends Controller
 {
@@ -23,7 +24,7 @@ class EntryController extends Controller
     public function destroy($id)
     {
         Entry::findOrFail($id)->delete();
-        return redirect()->route('entries.index');
+        return Inertia::location('/entries');
     }
 
     public function edit($id)
@@ -45,7 +46,7 @@ class EntryController extends Controller
 
         $entry->update($validated);
 
-        return redirect('/entries')->with('success', 'Entry updated!');
+        return Inertia::location('/entries')->with('success', 'Entry updated!');
     }
 
     // Save new entry
@@ -60,6 +61,6 @@ class EntryController extends Controller
 
         Entry::create($validated);
 
-        return redirect('/')->with('success', 'Entry saved!');
+        return Inertia::location('/entries')->with('success', 'Entry saved!');
     }
 }

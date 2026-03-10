@@ -63,7 +63,7 @@ Route::get('/login', function () {
 Route::post('/login', function (Request $request) {
     if ($request->password === env('APP_PASSWORD')) {
         Session::put('authenticated', true);
-        return redirect('/');  // Use redirect instead of Inertia::location
+        return Inertia::location('/');
     }
     
     return back()->withErrors(['password' => 'Incorrect password']);
@@ -71,7 +71,7 @@ Route::post('/login', function (Request $request) {
 
 Route::post('/logout', function () {
     Session::forget('authenticated');
-    return redirect('/');  // Use redirect instead of Inertia::location
+    return Inertia::location('/');
 })->name('logout');
 
 // Protected routes - need password to CREATE/EDIT/DELETE
