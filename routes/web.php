@@ -79,4 +79,4 @@ Route::middleware('simple.auth')->group(function () {
     Route::post('/entries', [EntryController::class, 'store']);
     Route::post('/entries/{id}', [EntryController::class, 'update']);
     Route::post('/entries/{id}/delete', [EntryController::class, 'destroy']);
-});
+}); 
